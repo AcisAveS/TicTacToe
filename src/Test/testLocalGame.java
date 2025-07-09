@@ -3,7 +3,7 @@ package src.Test;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import src.Utils.LocalGame;
+import src.Controllers.LocalGame;
 
 public class testLocalGame {
 
