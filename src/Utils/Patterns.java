@@ -3,7 +3,7 @@ package src.Utils;
 public class Patterns {
 
     private final byte patternsCoordinates[][] = { { 0, 3, 6 }, { 0, 1, 2 }, { 0, 2 } };
-    private String player = "";
+    private String player;
     private byte[] pattern;
 
     public boolean checkPatterns(String[] cells) {
@@ -35,6 +35,8 @@ public class Patterns {
 
                 if (counter == 3) {
                     return true;
+                } else {
+                    pattern = null;
                 }
             }
 
