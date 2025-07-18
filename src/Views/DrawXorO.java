@@ -4,33 +4,50 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
+import src.Controllers.LocalGame;
+import src.Controllers.OnlineGame;
 
 public class DrawXorO extends JLabel implements MouseListener {
+    private LocalGame localGame;
+    private OnlineGame onlineGame;
 
-    private boolean playerX = false;
-    private boolean playerO = false;
+    DrawXorO(byte cellNumber) {
+        int LineWeight = 3;
+        int drawBottomBorder = cellNumber < 6 ? LineWeight : 0;
+        int drawRightBorder = (cellNumber + 1) % 3 == 0 ? 0 : LineWeight;
 
-    DrawXorO() {
         setFont(new Font("Arial", Font.BOLD, 80));
         setVerticalAlignment(JLabel.CENTER);
         setHorizontalAlignment(JLabel.CENTER);
+        setBorder(BorderFactory.createMatteBorder(0, 0, drawBottomBorder, drawRightBorder, Color.BLACK));
         addMouseListener(this);
     }
 
-    public void DrawBorders(int cell) {
-        int LineWeight = 3;
-        int drawBottomBorder = cell < 6 ? LineWeight : 0;
-        int drawRightBorder = (cell + 1) % 3 == 0 ? 0 : LineWeight;
-        setBorder(BorderFactory.createMatteBorder(0, 0, drawBottomBorder, drawRightBorder, Color.BLACK));
+    public DrawXorO(byte cellNumber, LocalGame localGame) {
+        this(cellNumber);
+        this.localGame = localGame;
     }
-    
+
+    public DrawXorO(byte cellNumber, OnlineGame onlineGame) {
+        this(cellNumber);
+        this.onlineGame = onlineGame;
+    }
+
+    private void mouseLocalClickedEvent(MouseEvent e) {
+        setText(localGame.getPlayerTurn());
+        UIManager.put("Label.disabledForeground",
+                (this.getText().equals("X") ? java.awt.Color.RED : java.awt.Color.BLUE));
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        setText(playerX ? "X" : "O");
+        if (isEnabled()) {
+            if (localGame.isEnabled())
+                mouseLocalClickedEvent(e);
+        }
     }
 
     @Override
@@ -49,13 +66,4 @@ public class DrawXorO extends JLabel implements MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
-        if (!enabled) {
-            setForeground(Color.RED);
-        } else {
-            setForeground(Color.RED);
-        }
-    }
 }
