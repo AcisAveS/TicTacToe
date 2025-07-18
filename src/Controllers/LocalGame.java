@@ -8,7 +8,7 @@ public class LocalGame {
     private String playerTurn;
     private boolean enabled;
     private String[] cells = new String[9];
-    Patterns patterns;
+    private final Patterns patterns;
 
     public LocalGame(String playerStart) {
         patterns = new Patterns();
@@ -30,7 +30,6 @@ public class LocalGame {
 
     public boolean isFull() {
         boolean full = Arrays.stream(cells)
-                .map(cell -> cell)
                 .filter(cell -> cell != null)
                 .toArray(String[]::new).length == 9;
 
@@ -42,7 +41,7 @@ public class LocalGame {
         return patterns.checkPatterns(cells);
     }
 
-    public byte[] winnerPattern() {
+    public int[] winnerPattern() {
         return patterns.getWinnerPattern();
     }
 

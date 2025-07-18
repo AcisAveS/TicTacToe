@@ -28,7 +28,6 @@ public class testLocalGame {
                 if (i < 9) {
                     tictactoe[i] = localGame.getPlayerTurn();
                     localGame.updateGame(i, localGame.getPlayerTurn());
-                    localGame.isFull();
                     winner = localGame.isThereAWinner();
                     full = localGame.isFull();
 
