@@ -4,16 +4,19 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import src.Controllers.LocalGame;
 
 public class Window extends javax.swing.JFrame {
 
-    private boolean localGame = false;
+    private LocalGame localGame;
     private boolean multiplayerGame = false;
 
     public Window() {
@@ -29,18 +32,33 @@ public class Window extends javax.swing.JFrame {
     }
 
     private JPanel Box() {
-        ArrayList<DrawXorO> draw = new ArrayList<DrawXorO>();
-        String playerStart = (Math.random() * 100) % 2 == 0 ? "cross" : "circle";
+        ArrayList<DrawXorO> draw = new ArrayList<DrawXorO>(9);
         JPanel box = new JPanel(new java.awt.GridLayout(3, 3));
         box.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
-        for (int pos = 0; pos < 9; pos++) {
-            draw.add(new DrawXorO());
+        while (draw.size() < 9) {
+            DrawXorO label = new DrawXorO((byte) draw.size(), localGame);
+            draw.add(label);
         }
 
         draw.forEach(label -> {
-            label.setPlayer(playerStart);
-            label.DrawBorders(draw.indexOf(label));
+            label.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    System.out.println(localGame.getPlayerTurn());
+                    if (localGame.isEnabled() && label.isEnabled()) {
+
+                        localGame.updateGame((byte) draw.indexOf(label), label.getText());
+
+                        if (localGame.isThereAWinner() && !localGame.isFull())
+                            for (Component component : box.getComponents())
+                                component.setEnabled(false);
+
+                        localGame.changePlayerTurn();
+                        label.setEnabled(false);
+                    }
+                }
+
+            });
             box.add(label);
         });
 
@@ -57,7 +75,8 @@ public class Window extends javax.swing.JFrame {
         onlineButton.setPreferredSize(new Dimension(200, 50));
 
         localButton.addActionListener(e -> {
-            localGame = true;
+            localGame = new LocalGame(((int) (Math.random() * 100) % 2 == 0) ? "cross" : "circle");
+            localGame.setEnabled(true);
             remove(menu);
             add(Box());
             repaint();
