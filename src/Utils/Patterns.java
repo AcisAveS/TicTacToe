@@ -12,7 +12,6 @@ public class Patterns {
         boolean horizontalChecked = false;
         boolean verticalChecked = false;
 
-        System.out.println("----------");
         for (byte pos[] : patternsCoordinates) {
 
             for (byte position : pos) {

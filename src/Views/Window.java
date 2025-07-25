@@ -44,7 +44,6 @@ public class Window extends javax.swing.JFrame {
         draw.forEach(label -> {
             label.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    System.out.println(localGame.getPlayerTurn());
                     if (localGame.isEnabled() && label.isEnabled()) {
 
                         localGame.updateGame((byte) draw.indexOf(label), label.getText());
