@@ -8,11 +8,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import src.Controllers.LocalGame;
-import src.Controllers.OnlineGame;
 
 public class DrawXorO extends JLabel implements MouseListener {
     private LocalGame localGame;
-    private OnlineGame onlineGame;
 
     DrawXorO(byte cellNumber) {
         int LineWeight = 3;
@@ -31,11 +29,6 @@ public class DrawXorO extends JLabel implements MouseListener {
         this.localGame = localGame;
     }
 
-    public DrawXorO(byte cellNumber, OnlineGame onlineGame) {
-        this(cellNumber);
-        this.onlineGame = onlineGame;
-    }
-
     private void mouseLocalClickedEvent(MouseEvent e) {
         setText(localGame.getPlayerTurn());
         UIManager.put("Label.disabledForeground",
@@ -44,10 +37,8 @@ public class DrawXorO extends JLabel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (isEnabled()) {
-            if (localGame.isEnabled())
-                mouseLocalClickedEvent(e);
-        }
+        if (isEnabled() && localGame.isEnabled())
+            mouseLocalClickedEvent(e);
     }
 
     @Override
