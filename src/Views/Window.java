@@ -56,7 +56,7 @@ public class Window extends javax.swing.JFrame {
 
                         localGame.updateGame((byte) draw.indexOf(label), label.getText());
 
-                        if (localGame.isThereAWinner() && !localGame.isFull()) {
+                        if (localGame.isThereAWinner()) {
                             lateralPane.updateScoreBoard(localGame.getPlayerTurn());
                             for (Component component : box.getComponents())
                                 component.setEnabled(false);
